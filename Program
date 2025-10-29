@@ -1,0 +1,40 @@
+# N-Queens Problem using Backtracking
+def solve_n_queens(N):
+    solutions = []
+    board = [-1] * N   # board[i] = column position of queen in row i
+
+    def is_safe(row, col):
+        for r in range(row):
+            c = board[r]
+            # Check same column or diagonals
+            if c == col or abs(c - col) == abs(r - row):
+                return False
+        return True
+
+    def backtrack(row=0):
+        if row == N:
+            solutions.append(board.copy())
+            return
+        for col in range(N):
+            if is_safe(row, col):
+                board[row] = col
+                backtrack(row + 1)
+                board[row] = -1  # backtrack
+
+    backtrack()
+    return solutions
+
+
+# Display solutions
+def print_solutions(solutions, N):
+    print(f"Total solutions for N = {N}: {len(solutions)}\n")
+    for sol in solutions:
+        for r in range(N):
+            print(" ".join("Q" if sol[r] == c else "." for c in range(N)))
+        print()
+
+# Example
+if __name__ == "__main__":
+    N = 4
+    sols = solve_n_queens(N)
+    print_solutions(sols, N)
